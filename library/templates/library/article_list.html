@@ -4,21 +4,29 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Articles</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-    <main>
-        <h1>Articles</h1>
+<body class="bg-light">
+    <main class="container py-5">
+        <header class="mb-4">
+            <h1 class="display-5 fw-semibold mb-2">Articles</h1>
+            <p class="text-body-secondary mb-0">Your saved reading list</p>
+        </header>
         {% if articles %}
-            <ul>
+            <ul class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 list-unstyled">
                 {% for article in articles %}
-                    <li>
-                        <h2>{{ article.name }}</h2>
-                        <p>{{ article.annotation }}</p>
+                    <li class="col">
+                        <article class="card h-100 shadow-sm">
+                            <div class="card-body">
+                                <h2 class="card-title h5">{{ article.name }}</h2>
+                                <p class="card-text text-body-secondary mb-0">{{ article.annotation }}</p>
+                            </div>
+                        </article>
                     </li>
                 {% endfor %}
             </ul>
         {% else %}
-            <p>No articles yet.</p>
+            <div class="alert alert-light border mb-0" role="status">No articles yet.</div>
         {% endif %}
     </main>
 </body>
