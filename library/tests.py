@@ -30,6 +30,12 @@ class ArticleListViewTests(TestCase):
         self.assertContains(response, "Another summary.")
         self.assertContains(response, "finished")
         self.assertContains(response, f'href="/articles/{first_article.pk}/edit/"')
+        self.assertContains(response, f'action="/articles/{first_article.pk}/delete/"')
+        self.assertContains(
+            response,
+            "Are you sure you want to delete this article?",
+        )
+        self.assertContains(response, 'name="csrfmiddlewaretoken"')
 
     def test_displays_empty_state_when_there_are_no_articles(self):
         response = self.client.get("/articles/")
@@ -109,6 +115,26 @@ class ArticleEditViewTests(TestCase):
         self.assertEqual(self.article.annotation, "Updated annotation")
         self.assertEqual(self.article.source, "Updated source")
         self.assertEqual(self.article.status, Article.Status.FINISHED)
+
+
+class ArticleDeleteViewTests(TestCase):
+    def setUp(self):
+        self.article = Article.objects.create(
+            name="Article to delete",
+            link="https://example.com/delete",
+        )
+
+    def test_deletes_article_and_redirects_to_article_list(self):
+        response = self.client.post(f"/articles/{self.article.pk}/delete/")
+
+        self.assertRedirects(response, "/articles/")
+        self.assertFalse(Article.objects.filter(pk=self.article.pk).exists())
+
+    def test_get_request_does_not_delete_article(self):
+        response = self.client.get(f"/articles/{self.article.pk}/delete/")
+
+        self.assertEqual(response.status_code, 405)
+        self.assertTrue(Article.objects.filter(pk=self.article.pk).exists())
 
 
 class BookCreateViewTests(TestCase):

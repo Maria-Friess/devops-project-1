@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_POST
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
@@ -40,6 +41,13 @@ def article_edit(request, pk):
         "library/article_edit.html",
         {"article": article, "form": form},
     )
+
+
+@require_POST
+def article_delete(request, pk):
+    article = get_object_or_404(Article, pk=pk)
+    article.delete()
+    return redirect("article-list")
 
 
 class BookViewSet(ModelViewSet):
