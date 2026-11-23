@@ -11,6 +11,7 @@
         <header class="mb-4">
             <h1 class="display-5 fw-semibold mb-2">Articles</h1>
             <p class="text-body-secondary mb-0">Your saved reading list</p>
+            <a class="btn btn-primary mt-3" href="{% url 'article-create' %}">Add article</a>
         </header>
         {% if articles %}
             <ul class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 list-unstyled">

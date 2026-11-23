@@ -23,6 +23,25 @@ class ArticleListViewTests(TestCase):
         self.assertContains(response, "No articles yet.")
 
 
+class ArticleCreateViewTests(TestCase):
+    def test_renders_form_with_csrf_token(self):
+        response = self.client.get("/articles/add/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'name="csrfmiddlewaretoken"')
+
+    def test_saves_book_and_redirects_to_article_list(self):
+        response = self.client.post(
+            "/articles/add/",
+            data={"name": "New article", "annotation": "A useful summary."},
+        )
+
+        self.assertRedirects(response, "/articles/")
+        self.assertTrue(
+            Book.objects.filter(name="New article", annotation="A useful summary.").exists()
+        )
+
+
 class BookCreateViewTests(TestCase):
     def test_creates_book_from_post_request(self):
         response = self.client.post(

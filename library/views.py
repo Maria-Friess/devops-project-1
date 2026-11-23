@@ -1,14 +1,27 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
+from library.forms import BookForm
 from library.models import Book
 from library.serializers import BookSerializer
 
 
 def article_list(request):
     return render(request, "library/article_list.html", {"articles": Book.objects.all()})
+
+
+def article_create(request):
+    if request.method == "POST":
+        form = BookForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("article-list")
+    else:
+        form = BookForm()
+
+    return render(request, "library/article_form.html", {"form": form})
 
 
 class BookViewSet(ModelViewSet):

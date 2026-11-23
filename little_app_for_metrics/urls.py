@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from rest_framework.routers import SimpleRouter
 
-from library.views import BookViewSet, article_list
+from library.views import BookViewSet, article_create, article_list
 
 
 router = SimpleRouter()
@@ -28,6 +28,7 @@ router.register(r'book', BookViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('articles/', article_list, name='article-list'),
+    path('articles/add/', article_create, name='article-create'),
 ]
 
 urlpatterns += router.urls
