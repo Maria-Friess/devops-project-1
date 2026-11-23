@@ -3,23 +3,24 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
-from library.forms import BookForm
-from library.models import Book
+from library.forms import ArticleForm
+from library.models import Article, Book
 from library.serializers import BookSerializer
 
 
 def article_list(request):
-    return render(request, "library/article_list.html", {"articles": Book.objects.all()})
+    articles = Article.objects.all()
+    return render(request, "library/article_list.html", {"articles": articles})
 
 
 def article_create(request):
     if request.method == "POST":
-        form = BookForm(request.POST)
+        form = ArticleForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect("article-list")
     else:
-        form = BookForm()
+        form = ArticleForm()
 
     return render(request, "library/article_form.html", {"form": form})
 
