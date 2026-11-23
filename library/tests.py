@@ -21,3 +21,19 @@ class ArticleListViewTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "No articles yet.")
+
+
+class BookCreateViewTests(TestCase):
+    def test_creates_book_from_post_request(self):
+        response = self.client.post(
+            "/book/",
+            data={"name": "New article", "annotation": "A useful summary."},
+            content_type="application/json",
+        )
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.json()["name"], "New article")
+        self.assertEqual(response.json()["annotation"], "A useful summary.")
+        self.assertTrue(
+            Book.objects.filter(name="New article", annotation="A useful summary.").exists()
+        )
