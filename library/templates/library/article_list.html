@@ -22,7 +22,11 @@
                                 <h2 class="card-title h5">{{ article.name }}</h2>
                                 <p class="card-text"><a href="{{ article.link }}">{{ article.link }}</a></p>
                                 <p class="card-text text-body-secondary mb-0">{{ article.annotation }}</p>
+                                {% if article.source %}
+                                    <p class="card-text"><span class="fw-semibold">Source:</span> {{ article.source }}</p>
+                                {% endif %}
                                 <p class="card-text mt-2"><span class="fw-semibold">Status:</span> {{ article.status }}</p>
+                                <a class="btn btn-outline-primary mt-2" href="{% url 'article-edit' article.pk %}">Edit</a>
                             </div>
                         </article>
                     </li>
